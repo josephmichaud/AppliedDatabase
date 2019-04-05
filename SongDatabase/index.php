@@ -55,23 +55,32 @@ if(isset($_POST['gender']) && !empty($_POST['name'])) {
         </div>
         
         <div class="container">
-            <h2>Top 20 Baby Names Voted by Vistors</h2>           
+            <h2>SELECT * FROM SONGS</h2>           
             <table class="table table-condensed">
                 <thead>
                     <tr>
-                        <th>Name</th>
-                        <th>Gender</th>
-                        <th>Votes</th>
+                        <?php
+                            $selectStmt = "SHOW COLUMNS FROM Songs;";
+                            $result = $db->query($selectStmt);
+                            if($result->num_rows > 0) {
+                                while($row = $result->fetch_assoc()) {
+                                    echo "<th>" . $row['Field'] . "</th>";
+                                }
+                            }
+                        ?>
                     </tr>
                 </thead>
                 <tbody>
                     <?php
-                        $selectStmt = "SELECT * FROM `BABYNAMEVOTES` ORDER BY Votes DESC, Name LIMIT 20;";
+                        $selectStmt = "SELECT * FROM Songs;";
                         $result = $db->query($selectStmt);
                         if($result->num_rows > 0) {
                             while($row = $result->fetch_assoc()) {
-                                
-                                echo "<tr class=" . $row['Gender'] . "><td>" . ucwords(strtolower($row['Name'])) . "</td><td>" . $row['Gender'] . "</td><td>" . $row['Votes'] . "</td></tr>";
+                                echo "<tr>";
+                                foreach ($row as $value) {
+                                    echo "<td>" . $value . "</td>";
+                                }
+                                echo "</tr>";
                             }
                         }
                     ?>
