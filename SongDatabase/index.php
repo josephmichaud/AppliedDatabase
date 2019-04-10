@@ -16,6 +16,11 @@ if(isset($_POST['gender']) && !empty($_POST['name'])) {
         $db->query($insertStmt);
     }
 }
+if(isset($_POST['table'])) {
+    $table = $_POST['table'];
+} else {
+    $table = "Songs";
+}
 ?>
 <html>
     <head>
@@ -35,6 +40,7 @@ if(isset($_POST['gender']) && !empty($_POST['name'])) {
             <h6>Music Database</h6>
             <div class="clearfix"> </div>
         </div>
+        <!--
         <div class="header" id="home">
         <div class="top_spl_courses">
             <div class="container">
@@ -43,7 +49,7 @@ if(isset($_POST['gender']) && !empty($_POST['name'])) {
                         <form action="" method="post">
                             <div class="form-group">
                                 <textarea class=".form-control" rows="4" cols="50" placeholder="Enter query here."></textarea>
-                                <!--<input type="text" class="form-control" name="query" id="query">-->
+                                <input type="text" class="form-control" name="query" id="query">
                                 <span id="tempglyph" class=""></span>
                             </div>
                             &nbsp;&nbsp;<button type="submit" name="submit" id="submit" class="btn btn-default">Vote</button>
@@ -53,14 +59,16 @@ if(isset($_POST['gender']) && !empty($_POST['name'])) {
                 </div>
             </div>
         </div>
+-->
         
         <div class="container">
-            <h2>SELECT * FROM SONGS</h2>           
+            <h2>SELECT * FROM  <form action="" method="post"> <select name="table" id="table" onchange="this.form.submit()"><option value="" selected disabled hidden>Choose here</option><option value="Songs">Songs</option><option value="Artists">Artists</option><option value="Albums">Albums</option><option value="Contracts">Contracts</option></select></form></h2>           
+            <h2><?php echo $table ?></h2>
             <table class="table table-condensed">
                 <thead>
                     <tr>
                         <?php
-                            $selectStmt = "SHOW COLUMNS FROM Songs;";
+                            $selectStmt = "SHOW COLUMNS FROM " . $table .";";
                             $result = $db->query($selectStmt);
                             if($result->num_rows > 0) {
                                 while($row = $result->fetch_assoc()) {
@@ -72,7 +80,7 @@ if(isset($_POST['gender']) && !empty($_POST['name'])) {
                 </thead>
                 <tbody>
                     <?php
-                        $selectStmt = "SELECT * FROM Songs;";
+                        $selectStmt = "SELECT * FROM " . $table . ";";
                         $result = $db->query($selectStmt);
                         if($result->num_rows > 0) {
                             while($row = $result->fetch_assoc()) {
